@@ -4,5 +4,5 @@ simulate PageRank and visualize the result
 
 to see visualization result </br>
 in pagerank_search dir, run this </br>
-'''python parse.py'''</br>
-'''python -m http.server 8000'''</br>
+```python parse.py```</br>
+```python -m http.server 8000```</br>
