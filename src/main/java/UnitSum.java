@@ -17,13 +17,13 @@ public class UnitSum {
         @Override
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
 
-            //input format: toPage\t unitMultiplication
-            //target: pass to reducer
+            // input value: toPage\t subPr
+            // target: pass to reducer
             String[] parts = value.toString().trim().split("\t");
             String toPage = parts[0].trim();
-            double unitMultiplication = Double.parseDouble(parts[1].trim());
+            double subPr = Double.parseDouble(parts[1].trim());
 
-            context.write(new Text(toPage), new DoubleWritable(unitMultiplication));
+            context.write(new Text(toPage), new DoubleWritable(subPr));
         }
     }
 
@@ -35,13 +35,13 @@ public class UnitSum {
 
             //input key = toPage value = <unitMultiplication>
             //target: sum!
-            double sum = 0;
+            double totalPr = 0;
             for (DoubleWritable val : values) {
-                sum += val.get();
+                totalPr += val.get();
             }
             DecimalFormat df = new DecimalFormat("#.0000");
-            sum = Double.valueOf(df.format(sum));
-            context.write(key, new DoubleWritable(sum));
+            totalPr = Double.valueOf(df.format(totalPr));
+            context.write(key, new DoubleWritable(totalPr));
         }
     }
 
