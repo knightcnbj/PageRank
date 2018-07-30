@@ -81,21 +81,26 @@ public class UnitMultiplication {
             // iterate map -> pr0 * prob = output val(subPr) 
 
             List<String> transitionUnits = new ArrayList<String>();
-            double prUnit = 0;
+            double prCell = 0;
 
             for (Text val : values) {
+                // this part should execute n times since transition matrix is nxn
                 if (val.toString().contains("="))
                     transitionUnits.add(val.toString());
+                // this part should only execute once since pr matrix is nx1
+                // so n different keys but each only has 1 val
                 else
-                    prUnit = Double.parseDouble(val.toString());
+                    prCell = Double.parseDouble(val.toString());
             }
 
-            for (String unit : transitionUnits) {
-                String[] parts = unit.split("=");
-                String outputKey = parts[0];
+            for (String cell : transitionUnits) {
+                // ex: cell: 2=1/3 (toId=prob)
+                String[] parts = cell.split("=");
+                // key: toId
+                String toId = parts[0];
                 double probability = Double.parseDouble(parts[1]);
-                String outputVal = String.valueOf(probability * prUnit);
-                context.write(new Text(outputKey), new Text(outputVal));
+                double subPr = probability * prCell
+                context.write(new Text(toId), new Text(String.valueOf(subPr)));
             }
         }
     }
